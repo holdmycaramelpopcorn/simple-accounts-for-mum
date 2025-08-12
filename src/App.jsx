@@ -60,6 +60,15 @@ export default function App() {
     grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
     align-items: center;
     }
+
+    .card label {
+  display: block;
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--muted);
+  letter-spacing: 0.2px;
+  margin-bottom: 4px;
+}
     
     input[type="text"], input[type="date"], input[type="number"], select {
     width: 100%;
@@ -211,106 +220,122 @@ export default function App() {
         </div>
       </div>
 
-      <div className="top-controls">
-        <div className="card" style={{ flex: '1 1 460px' }}>
-  {/* Filters header row */}
-  <div
-    style={{
-      display: 'flex',
-      justifyContent: 'space-between',
-      alignItems: 'center',
-      marginBottom: '8px',
-    }}
-  >
-    <div style={{ fontWeight: 700 }}>Filters</div>
-    <button
-      className="btn btn-ghost"
-      onClick={() =>
-        setFilters({ startDate: '', endDate: '', type: '', search: '' })
-      }
-    >
-      Clear
-    </button>
+      <div className="top-controls" style={{ flexDirection: 'column', gap: '20px' }}>
+  {/* Filters */}
+  <div className="card">
+    <div style={{ fontWeight: 700, marginBottom: '12px' }}>Filters</div>
+    <div style={{ display: 'grid', gap: '12px' }}>
+      <div>
+        <label>From Date:</label>
+        <input
+          type="date"
+          value={filters.startDate}
+          onChange={(e) => setFilters({ ...filters, startDate: e.target.value })}
+        />
+      </div>
+      <div>
+        <label>To Date:</label>
+        <input
+          type="date"
+          value={filters.endDate}
+          onChange={(e) => setFilters({ ...filters, endDate: e.target.value })}
+        />
+      </div>
+      <div>
+        <label>Type:</label>
+        <select
+          value={filters.type}
+          onChange={(e) => setFilters({ ...filters, type: e.target.value })}
+        >
+          <option value="">All</option>
+          <option value="Credit">Credit</option>
+          <option value="Debit">Debit</option>
+        </select>
+      </div>
+      <div>
+        <label>Search Particulars:</label>
+        <input
+          type="text"
+          value={filters.search}
+          onChange={(e) => setFilters({ ...filters, search: e.target.value })}
+        />
+      </div>
+      <button
+        className="btn btn-ghost"
+        onClick={() => setFilters({ startDate: '', endDate: '', type: '', search: '' })}
+      >
+        Clear
+      </button>
+    </div>
   </div>
 
-  {/* Filters grid */}
-  <div
-    style={{
-      display: 'grid',
-      gridTemplateColumns: 'repeat(auto-fit, minmax(160px, 1fr))',
-      gap: '8px',
-    }}
-  >
-    <div
-      style={{
-        display: 'grid',
-        gridTemplateColumns: 'repeat(auto-fit, minmax(120px, 1fr))',
-        gap: '8px',
-      }}
-    >
-      <input
-        type="date"
-        placeholder="Start Date"
-        value={filters.startDate}
-        onChange={(e) =>
-          setFilters({ ...filters, startDate: e.target.value })
-        }
-      />
-      <input
-        type="date"
-        placeholder="End Date"
-        value={filters.endDate}
-        onChange={(e) =>
-          setFilters({ ...filters, endDate: e.target.value })
-        }
-      />
+  {/* Add Entry */}
+  <div className="card">
+    <div style={{ fontWeight: 700, marginBottom: '12px' }}>Add Entry</div>
+    <div style={{ display: 'grid', gap: '12px' }}>
+      <div>
+        <label>Date:</label>
+        <input
+          type="date"
+          value={newEntry.date}
+          onChange={(e) => setNewEntry({ ...newEntry, date: e.target.value })}
+        />
+      </div>
+      <div>
+        <label>Particulars:</label>
+        <input
+          type="text"
+          value={newEntry.particulars}
+          onChange={(e) => setNewEntry({ ...newEntry, particulars: e.target.value })}
+        />
+      </div>
+      <div>
+        <label>Type:</label>
+        <select
+          value={newEntry.type}
+          onChange={(e) => setNewEntry({ ...newEntry, type: e.target.value })}
+        >
+          <option value="Credit">Credit</option>
+          <option value="Debit">Debit</option>
+        </select>
+      </div>
+      <div>
+        <label>Comments (optional):</label>
+        <input
+          type="text"
+          value={newEntry.comments}
+          onChange={(e) => setNewEntry({ ...newEntry, comments: e.target.value })}
+        />
+      </div>
+      <div>
+        <label>Amount:</label>
+        <input
+          type="text"
+          inputMode="decimal"
+          value={newEntry.amount}
+          onChange={(e) =>
+            setNewEntry({ ...newEntry, amount: sanitizeAmount(e.target.value) })
+          }
+        />
+      </div>
+      <div style={{ display: 'flex', justifyContent: 'flex-end', gap: 8 }}>
+        <button
+          className="btn btn-ghost"
+          onClick={() =>
+            setNewEntry({ date: '', particulars: '', type: 'Credit', comments: '', amount: '' })
+          }
+        >
+          Reset
+        </button>
+        <button className="btn btn-primary" onClick={handleAdd} disabled={loading}>
+          {loading ? 'Saving...' : 'Add Entry'}
+        </button>
+      </div>
     </div>
-
-    <select
-      value={filters.type}
-      onChange={(e) =>
-        setFilters({ ...filters, type: e.target.value })
-      }
-    >
-      <option value="">All</option>
-      <option value="Credit">Credit</option>
-      <option value="Debit">Debit</option>
-    </select>
-    <input
-      type="text"
-      placeholder="Search particulars"
-      value={filters.search}
-      onChange={(e) =>
-        setFilters({ ...filters, search: e.target.value })
-      }
-    />
+    {error && <div style={{ color: '#ef4444', marginTop: 8 }}>{error}</div>}
   </div>
 </div>
 
-
-
-        <div className="card" style={{flex:'1 1 420px'}}>
-          <div style={{display:'flex',justifyContent:'space-between',alignItems:'center',marginBottom:8}}>
-            <div style={{fontWeight:700}}>Add Entry</div>
-            <div style={{fontSize:12,color:'var(--muted)'}}>Credit adds, Debit subtracts</div>
-          </div>
-          <div className="form-grid">
-            <input type="date" value={newEntry.date} onChange={e => setNewEntry({...newEntry,date:e.target.value})} />
-            <input type="text" placeholder="Particulars" value={newEntry.particulars} onChange={e => setNewEntry({...newEntry,particulars:e.target.value})} />
-            <select value={newEntry.type} onChange={e => setNewEntry({...newEntry,type:e.target.value})}>
-              <option value="Credit">Credit</option>
-              <option value="Debit">Debit</option>
-            </select>
-            <input type="text" placeholder="Comments (optional)" value={newEntry.comments} onChange={e => setNewEntry({...newEntry,comments:e.target.value})} />
-            <input type="text" inputMode="decimal" placeholder="Amount" value={newEntry.amount} onChange={e => setNewEntry({...newEntry,amount:sanitizeAmount(e.target.value)})} />
-            <div style={{gridColumn:'1 / -1',display:'flex',justifyContent:'flex-end',gap:8}}>
-              <button className="btn btn-ghost" onClick={() => setNewEntry({ date: '', particulars: '', type: 'Credit', comments: '', amount: '' })}>Reset</button>
-              <button className="btn btn-primary" onClick={handleAdd} disabled={loading}>{loading ? 'Saving...' : 'Add Entry'}</button>
-            </div>
-          </div>
-          {error && <div style={{color:'#ef4444',marginTop:8}}>{error}</div>}
-        </div>
-      </div>
 
       <div className="card table-wrap" style={{overflow:'visible'}}>
         <table className="app-table">
