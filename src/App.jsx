@@ -69,6 +69,20 @@ export default function App() {
   letter-spacing: 0.2px;
   margin-bottom: 4px;
 }
+
+.card input,
+.card select,
+.card button {
+  width: 100%;
+  box-sizing: border-box;
+}
+
+.card > div {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
     
     input[type="text"], input[type="date"], input[type="number"], select {
     width: 100%;
@@ -105,6 +119,13 @@ export default function App() {
       table.app-table td::before{content:attr(data-label);color:var(--muted);font-weight:600;margin-right:8px}
       .amount, .balance{text-align:right}
     }
+
+    @media (max-width: 720px) {
+  .top-controls {
+    flex-direction: column;
+  }
+}
+
 
     .empty{padding:30px;text-align:center;color:var(--muted)}
 
