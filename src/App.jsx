@@ -232,8 +232,8 @@ export default function App() {
     <div className="app-container">
       <div className="site-header">
         <div className="brand">
-          <h1>Expense Tracker</h1>
-          <p>Quick, beautiful, and mobile-friendly — tracks balance automatically.</p>
+          <h1>Simple Accounts Tracker</h1>
+          <p>For mom, by Dinesh.</p>
         </div>
         <div style={{textAlign:'right'}}>
           <div style={{fontSize:12,color:'#374151'}}>Entries: <strong>{entries.length}</strong></div>
@@ -395,7 +395,7 @@ export default function App() {
         </table>
       </div>
 
-      <div className="footer-note">Designed for quick use — works on phones, tablets and desktop. Want CSV export, categories, or a dark mode? I can add that next.</div>
+      <div className="footer-note">Works for Desktop and Phone - Work in Progress</div>
     </div>
   );
 }
