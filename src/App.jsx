@@ -47,29 +47,29 @@ export default function App() {
     .top-controls{display:flex;gap:12px;flex-wrap:wrap;margin-bottom:16px}
     .card{background:var(--card);padding:14px;border-radius:12px;box-shadow:0 8px 24px rgba(16,24,40,0.06);border:1px solid rgba(99,102,241,0.06)}
 
-    /* FIXED filters grid */
     .filters {
-      display: grid;
-      gap: 10px;
-      grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+    display: grid;
+    gap: 10px;
+    /* Bigger min to avoid desktop overlap, auto-fill for wrapping */
+    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
     }
-
-    /* FIXED form grid for Add Entry */
+    
     .form-grid {
-      display: grid;
-      gap: 10px;
-      grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
-      align-items: center;
+    display: grid;
+    gap: 10px;
+    grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+    align-items: center;
+    }
+    
+    input[type="text"], input[type="date"], input[type="number"], select {
+    width: 100%;
+    padding: 10px;
+    border-radius: 8px;
+    border: 1px solid #e6edf3;
+    font-size: 14px;
+    min-width: 0; /* Allow shrinking inside grid cell */
     }
 
-    input[type="text"], input[type="date"], input[type="number"], select{
-      width:100%;
-      padding:10px;
-      border-radius:8px;
-      border:1px solid #e6edf3;
-      font-size:14px;
-      min-width:0; /* prevent grid overflow */
-    }
 
     .btn{display:inline-flex;align-items:center;gap:8px;border:0;padding:10px 14px;border-radius:10px;cursor:pointer}
     .btn-primary{background:linear-gradient(90deg,var(--success-start),var(--success-end));color:white;box-shadow:0 8px 18px rgba(5,150,105,0.12)}
@@ -212,22 +212,70 @@ export default function App() {
       </div>
 
       <div className="top-controls">
-        <div className="card filters" style={{flex:'1 1 460px'}}>
-          <div style={{display:'flex',justifyContent:'space-between',alignItems:'center',marginBottom:8}}>
-            <div style={{fontWeight:700}}>Filters</div>
-            <button className="btn btn-ghost" onClick={() => setFilters({ startDate:'', endDate:'', type:'', search:'' })}>Clear</button>
-          </div>
-          <div style={{display:'grid',gridTemplateColumns:'repeat(2,1fr)',gap:8}}>
-            <input type="date" value={filters.startDate} onChange={e => setFilters({...filters,startDate:e.target.value})} />
-            <input type="date" value={filters.endDate} onChange={e => setFilters({...filters,endDate:e.target.value})} />
-            <select value={filters.type} onChange={e => setFilters({...filters,type:e.target.value})}>
-              <option value="">All</option>
-              <option value="Credit">Credit</option>
-              <option value="Debit">Debit</option>
-            </select>
-            <input type="text" placeholder="Search particulars" value={filters.search} onChange={e => setFilters({...filters,search:e.target.value})} />
-          </div>
-        </div>
+        <div className="card" style={{ flex: '1 1 460px' }}>
+  {/* Filters header row */}
+  <div
+    style={{
+      display: 'flex',
+      justifyContent: 'space-between',
+      alignItems: 'center',
+      marginBottom: '8px',
+    }}
+  >
+    <div style={{ fontWeight: 700 }}>Filters</div>
+    <button
+      className="btn btn-ghost"
+      onClick={() =>
+        setFilters({ startDate: '', endDate: '', type: '', search: '' })
+      }
+    >
+      Clear
+    </button>
+  </div>
+
+  {/* Filters grid */}
+  <div
+    style={{
+      display: 'grid',
+      gridTemplateColumns: 'repeat(auto-fit, minmax(140px, 1fr))',
+      gap: '8px',
+    }}
+  >
+    <input
+      type="date"
+      value={filters.startDate}
+      onChange={(e) =>
+        setFilters({ ...filters, startDate: e.target.value })
+      }
+    />
+    <input
+      type="date"
+      value={filters.endDate}
+      onChange={(e) =>
+        setFilters({ ...filters, endDate: e.target.value })
+      }
+    />
+    <select
+      value={filters.type}
+      onChange={(e) =>
+        setFilters({ ...filters, type: e.target.value })
+      }
+    >
+      <option value="">All</option>
+      <option value="Credit">Credit</option>
+      <option value="Debit">Debit</option>
+    </select>
+    <input
+      type="text"
+      placeholder="Search particulars"
+      value={filters.search}
+      onChange={(e) =>
+        setFilters({ ...filters, search: e.target.value })
+      }
+    />
+  </div>
+</div>
+
 
         <div className="card" style={{flex:'1 1 420px'}}>
           <div style={{display:'flex',justifyContent:'space-between',alignItems:'center',marginBottom:8}}>
