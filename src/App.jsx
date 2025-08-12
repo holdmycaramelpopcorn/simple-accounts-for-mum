@@ -53,69 +53,71 @@ export default function App() {
   useEffect(() => { recalcBalances(); }, [entries.length]);
 
   return (
-    <div className="max-w-4xl mx-auto p-4">
-      <h1 className="text-2xl font-bold mb-4 text-center">Expense Tracker</h1>
+    <div className="min-h-screen bg-gray-50 p-4">
+      <div className="max-w-5xl mx-auto space-y-6">
+        <h1 className="text-3xl font-bold text-center text-blue-700">Expense Tracker</h1>
 
-      {/* Filters */}
-      <div className="grid grid-cols-2 sm:grid-cols-4 gap-2 mb-4">
-        <input type="date" value={filters.startDate} onChange={e => setFilters({ ...filters, startDate: e.target.value })} className="border p-2 rounded w-full" />
-        <input type="date" value={filters.endDate} onChange={e => setFilters({ ...filters, endDate: e.target.value })} className="border p-2 rounded w-full" />
-        <select value={filters.type} onChange={e => setFilters({ ...filters, type: e.target.value })} className="border p-2 rounded w-full">
-          <option value="">All</option>
-          <option value="Credit">Credit</option>
-          <option value="Debit">Debit</option>
-        </select>
-        <input type="text" placeholder="Search particulars" value={filters.search} onChange={e => setFilters({ ...filters, search: e.target.value })} className="border p-2 rounded w-full" />
-      </div>
+        {/* Filters */}
+        <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
+          <input type="date" value={filters.startDate} onChange={e => setFilters({ ...filters, startDate: e.target.value })} className="border p-2 rounded w-full" />
+          <input type="date" value={filters.endDate} onChange={e => setFilters({ ...filters, endDate: e.target.value })} className="border p-2 rounded w-full" />
+          <select value={filters.type} onChange={e => setFilters({ ...filters, type: e.target.value })} className="border p-2 rounded w-full">
+            <option value="">All</option>
+            <option value="Credit">Credit</option>
+            <option value="Debit">Debit</option>
+          </select>
+          <input type="text" placeholder="Search particulars" value={filters.search} onChange={e => setFilters({ ...filters, search: e.target.value })} className="border p-2 rounded w-full" />
+        </div>
 
-      {/* Add Entry */}
-      <div className="grid grid-cols-1 sm:grid-cols-5 gap-2 mb-6">
-        <input type="date" value={newEntry.date} onChange={e => setNewEntry({ ...newEntry, date: e.target.value })} className="border p-2 rounded" />
-        <input type="text" placeholder="Particulars" value={newEntry.particulars} onChange={e => setNewEntry({ ...newEntry, particulars: e.target.value })} className="border p-2 rounded" />
-        <select value={newEntry.type} onChange={e => setNewEntry({ ...newEntry, type: e.target.value })} className="border p-2 rounded">
-          <option value="Credit">Credit</option>
-          <option value="Debit">Debit</option>
-        </select>
-        <input type="text" placeholder="Comments" value={newEntry.comments} onChange={e => setNewEntry({ ...newEntry, comments: e.target.value })} className="border p-2 rounded" />
-        <input type="number" step="0.01" min="0" inputMode="decimal" placeholder="Amount" value={newEntry.amount} onChange={e => setNewEntry({ ...newEntry, amount: e.target.value })} className="border p-2 rounded" />
-      </div>
-      <button onClick={addEntry} className="bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded mb-6">Add Entry</button>
+        {/* Add Entry */}
+        <div className="grid grid-cols-1 sm:grid-cols-5 gap-3">
+          <input type="date" value={newEntry.date} onChange={e => setNewEntry({ ...newEntry, date: e.target.value })} className="border p-2 rounded" />
+          <input type="text" placeholder="Particulars" value={newEntry.particulars} onChange={e => setNewEntry({ ...newEntry, particulars: e.target.value })} className="border p-2 rounded" />
+          <select value={newEntry.type} onChange={e => setNewEntry({ ...newEntry, type: e.target.value })} className="border p-2 rounded">
+            <option value="Credit">Credit</option>
+            <option value="Debit">Debit</option>
+          </select>
+          <input type="text" placeholder="Comments" value={newEntry.comments} onChange={e => setNewEntry({ ...newEntry, comments: e.target.value })} className="border p-2 rounded" />
+          <input type="number" step="0.01" min="0" inputMode="decimal" pattern="\\d*" placeholder="Amount" value={newEntry.amount} onChange={e => setNewEntry({ ...newEntry, amount: e.target.value })} className="border p-2 rounded" />
+        </div>
+        <button onClick={addEntry} className="bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded shadow">Add Entry</button>
 
-      {/* Entries Table */}
-      <div className="overflow-x-auto">
-        <table className="min-w-full table-fixed border-collapse border border-gray-200 text-sm sm:text-base">
-          <thead className="bg-gray-100">
-            <tr>
-              <th className="border p-2">Date</th>
-              <th className="border p-2">Particulars</th>
-              <th className="border p-2">Type</th>
-              <th className="border p-2">Comments</th>
-              <th className="border p-2 text-right">Amount</th>
-              <th className="border p-2 text-right">Balance</th>
-              <th className="border p-2">Actions</th>
-            </tr>
-          </thead>
-          <tbody>
-            {entries.map(entry => (
-              <tr key={entry.id} className="hover:bg-gray-50">
-                <td className="border p-2"><input type="date" value={entry.date} onChange={e => updateEntry(entry.id, 'date', e.target.value)} className="border p-1 rounded w-full" /></td>
-                <td className="border p-2"><input type="text" value={entry.particulars} onChange={e => updateEntry(entry.id, 'particulars', e.target.value)} className="border p-1 rounded w-full" /></td>
-                <td className="border p-2">
-                  <select value={entry.type} onChange={e => updateEntry(entry.id, 'type', e.target.value)} className="border p-1 rounded w-full">
-                    <option value="Credit">Credit</option>
-                    <option value="Debit">Debit</option>
-                  </select>
-                </td>
-                <td className="border p-2"><input type="text" value={entry.comments || ''} onChange={e => updateEntry(entry.id, 'comments', e.target.value)} className="border p-1 rounded w-full" /></td>
-                <td className="border p-2 text-right"><input type="number" step="0.01" min="0" inputMode="decimal" value={entry.amount} onChange={e => updateEntry(entry.id, 'amount', e.target.value)} className="border p-1 rounded w-full text-right" /></td>
-                <td className="border p-2 text-right">{entry.balance}</td>
-                <td className="border p-2 text-center">
-                  <button onClick={() => deleteEntry(entry.id)} className="text-red-500 hover:underline">Delete</button>
-                </td>
+        {/* Entries Table */}
+        <div className="overflow-x-auto bg-white rounded shadow">
+          <table className="w-full table-auto border-collapse text-sm sm:text-base">
+            <thead className="bg-gray-200">
+              <tr>
+                <th className="border p-2">Date</th>
+                <th className="border p-2">Particulars</th>
+                <th className="border p-2">Type</th>
+                <th className="border p-2">Comments</th>
+                <th className="border p-2 text-right">Amount</th>
+                <th className="border p-2 text-right">Balance</th>
+                <th className="border p-2">Actions</th>
               </tr>
-            ))}
-          </tbody>
-        </table>
+            </thead>
+            <tbody>
+              {entries.map(entry => (
+                <tr key={entry.id} className="hover:bg-gray-50">
+                  <td className="border p-1"><input type="date" value={entry.date} onChange={e => updateEntry(entry.id, 'date', e.target.value)} className="border p-1 rounded w-full" /></td>
+                  <td className="border p-1"><input type="text" value={entry.particulars} onChange={e => updateEntry(entry.id, 'particulars', e.target.value)} className="border p-1 rounded w-full" /></td>
+                  <td className="border p-1">
+                    <select value={entry.type} onChange={e => updateEntry(entry.id, 'type', e.target.value)} className="border p-1 rounded w-full">
+                      <option value="Credit">Credit</option>
+                      <option value="Debit">Debit</option>
+                    </select>
+                  </td>
+                  <td className="border p-1"><input type="text" value={entry.comments || ''} onChange={e => updateEntry(entry.id, 'comments', e.target.value)} className="border p-1 rounded w-full" /></td>
+                  <td className="border p-1 text-right"><input type="number" step="0.01" min="0" inputMode="decimal" pattern="\\d*" value={entry.amount} onChange={e => updateEntry(entry.id, 'amount', e.target.value)} className="border p-1 rounded w-full text-right" /></td>
+                  <td className="border p-1 text-right">{entry.balance}</td>
+                  <td className="border p-1 text-center">
+                    <button onClick={() => deleteEntry(entry.id)} className="text-red-500 hover:underline">Delete</button>
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
       </div>
     </div>
   );
