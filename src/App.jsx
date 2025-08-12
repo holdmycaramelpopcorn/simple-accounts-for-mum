@@ -1,10 +1,9 @@
 import React, { useState, useEffect } from "react";
 import { createClient } from "@supabase/supabase-js";
 
-const SUPABASE_URL = import.meta.env.VITE_SUPABASE_URL;
-const SUPABASE_ANON_KEY = import.meta.env.VITE_SUPABASE_ANON_KEY;
-
-const supabase = createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+const supabaseUrl = import.meta.env.VITE_SUPABASE_URL;
+const supabaseKey = import.meta.env.VITE_SUPABASE_KEY;
+const supabase = createClient(supabaseUrl, supabaseKey);
 
 export default function App() {
   const [entries, setEntries] = useState([]);
@@ -13,15 +12,14 @@ export default function App() {
     particulars: "",
     type: "Credit",
     comments: "",
-    amount: ""
+    amount: "",
   });
   const [filters, setFilters] = useState({
     startDate: "",
     endDate: "",
     search: "",
-    type: ""
+    type: "",
   });
-  const [editingId, setEditingId] = useState(null);
 
   useEffect(() => {
     fetchEntries();
@@ -49,26 +47,22 @@ export default function App() {
     fetchEntries();
   }
 
-  async function updateEntry(id, updated) {
-    await supabase.from("expenses").update(updated).eq("id", id);
-    setEditingId(null);
-    fetchEntries();
-  }
-
   async function deleteEntry(id) {
     await supabase.from("expenses").delete().eq("id", id);
     fetchEntries();
   }
 
   return (
-    <div className="min-h-screen bg-gray-50 p-4">
-      <div className="max-w-5xl mx-auto bg-white p-6 rounded shadow">
-        <h1 className="text-2xl font-bold mb-6">Expense Tracker</h1>
+    <div className="min-h-screen bg-gradient-to-r from-indigo-500 via-purple-500 to-pink-500 p-4">
+      <div className="max-w-6xl mx-auto bg-white rounded-lg shadow-lg p-6">
+        <h1 className="text-3xl font-bold text-center text-indigo-700 mb-6">
+          Expense Tracker
+        </h1>
 
         {/* Add Entry Form */}
         <form
           onSubmit={addEntry}
-          className="grid grid-cols-1 md:grid-cols-5 gap-4 mb-6"
+          className="grid grid-cols-1 md:grid-cols-6 gap-4 mb-6"
         >
           <input
             type="date"
@@ -110,14 +104,12 @@ export default function App() {
             className="border rounded p-2 w-full"
             required
           />
-          <div className="md:col-span-5">
-            <button
-              type="submit"
-              className="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700 w-full md:w-auto"
-            >
-              Add Entry
-            </button>
-          </div>
+          <button
+            type="submit"
+            className="bg-green-500 text-white px-4 py-2 rounded hover:bg-green-600 w-full"
+          >
+            Add Entry
+          </button>
         </form>
 
         {/* Filters */}
@@ -153,16 +145,16 @@ export default function App() {
         </div>
         <button
           onClick={fetchEntries}
-          className="mb-6 bg-green-600 text-white px-4 py-2 rounded hover:bg-green-700"
+          className="mb-6 bg-indigo-500 text-white px-4 py-2 rounded hover:bg-indigo-600"
         >
           Apply Filters
         </button>
 
-        {/* Entries Table */}
-        <div className="overflow-x-auto">
-          <table className="min-w-full border-collapse border border-gray-300">
+        {/* Responsive Table / Cards */}
+        <div className="hidden md:block overflow-x-auto">
+          <table className="min-w-full border-collapse border border-gray-300 text-sm">
             <thead>
-              <tr className="bg-gray-100">
+              <tr className="bg-indigo-100">
                 <th className="border p-2">Date</th>
                 <th className="border p-2">Particulars</th>
                 <th className="border p-2">Type</th>
@@ -173,7 +165,7 @@ export default function App() {
             </thead>
             <tbody>
               {entries.map((entry) => (
-                <tr key={entry.id}>
+                <tr key={entry.id} className="odd:bg-white even:bg-gray-50">
                   <td className="border p-2">{entry.date}</td>
                   <td className="border p-2">{entry.particulars}</td>
                   <td className="border p-2">{entry.type}</td>
@@ -182,7 +174,7 @@ export default function App() {
                   <td className="border p-2">
                     <button
                       onClick={() => deleteEntry(entry.id)}
-                      className="bg-red-600 text-white px-2 py-1 rounded hover:bg-red-700"
+                      className="bg-red-500 text-white px-2 py-1 rounded hover:bg-red-600"
                     >
                       Delete
                     </button>
@@ -191,6 +183,25 @@ export default function App() {
               ))}
             </tbody>
           </table>
+        </div>
+
+        {/* Mobile Cards */}
+        <div className="space-y-4 md:hidden">
+          {entries.map((entry) => (
+            <div key={entry.id} className="bg-gray-50 rounded-lg shadow p-4">
+              <p><strong>Date:</strong> {entry.date}</p>
+              <p><strong>Particulars:</strong> {entry.particulars}</p>
+              <p><strong>Type:</strong> {entry.type}</p>
+              <p><strong>Comments:</strong> {entry.comments}</p>
+              <p><strong>Amount:</strong> {entry.amount}</p>
+              <button
+                onClick={() => deleteEntry(entry.id)}
+                className="mt-2 bg-red-500 text-white px-3 py-1 rounded hover:bg-red-600"
+              >
+                Delete
+              </button>
+            </div>
+          ))}
         </div>
       </div>
     </div>
