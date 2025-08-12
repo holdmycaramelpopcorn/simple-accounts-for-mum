@@ -250,6 +250,7 @@ export default function App() {
     >
       <input
         type="date"
+        placeholder="Start Date"
         value={filters.startDate}
         onChange={(e) =>
           setFilters({ ...filters, startDate: e.target.value })
@@ -257,6 +258,7 @@ export default function App() {
       />
       <input
         type="date"
+        placeholder="End Date"
         value={filters.endDate}
         onChange={(e) =>
           setFilters({ ...filters, endDate: e.target.value })
@@ -329,7 +331,7 @@ export default function App() {
             )}
             {filtered.map(row => (
               <tr key={row.id}>
-                <td data-label="Date"><input className="cell-input" type="date" value={row.date} onChange={e => handleUpdate(row.id, 'date', e.target.value)} /></td>
+                <td data-label="Date"><input className="cell-input" type="date" placeholder="Date" value={row.date} onChange={e => handleUpdate(row.id, 'date', e.target.value)} /></td>
                 <td data-label="Particulars"><input className="cell-input" type="text" value={row.particulars} onChange={e => handleUpdate(row.id, 'particulars', e.target.value)} /></td>
                 <td data-label="Type">
                   <select className="cell-input" value={row.type} onChange={e => handleUpdate(row.id, 'type', e.target.value)}>
