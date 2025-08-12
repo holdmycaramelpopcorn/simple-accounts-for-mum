@@ -150,8 +150,8 @@ export default function App() {
           Apply Filters
         </button>
 
-        {/* Responsive Table / Cards */}
-        <div className="hidden md:block overflow-x-auto">
+        {/* Table */}
+        <div className="overflow-x-auto">
           <table className="min-w-full border-collapse border border-gray-300 text-sm">
             <thead>
               <tr className="bg-indigo-100">
@@ -183,25 +183,6 @@ export default function App() {
               ))}
             </tbody>
           </table>
-        </div>
-
-        {/* Mobile Cards */}
-        <div className="space-y-4 md:hidden">
-          {entries.map((entry) => (
-            <div key={entry.id} className="bg-gray-50 rounded-lg shadow p-4">
-              <p><strong>Date:</strong> {entry.date}</p>
-              <p><strong>Particulars:</strong> {entry.particulars}</p>
-              <p><strong>Type:</strong> {entry.type}</p>
-              <p><strong>Comments:</strong> {entry.comments}</p>
-              <p><strong>Amount:</strong> {entry.amount}</p>
-              <button
-                onClick={() => deleteEntry(entry.id)}
-                className="mt-2 bg-red-500 text-white px-3 py-1 rounded hover:bg-red-600"
-              >
-                Delete
-              </button>
-            </div>
-          ))}
         </div>
       </div>
     </div>
