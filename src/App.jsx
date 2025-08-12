@@ -237,24 +237,33 @@ export default function App() {
   <div
     style={{
       display: 'grid',
-      gridTemplateColumns: 'repeat(auto-fit, minmax(140px, 1fr))',
+      gridTemplateColumns: 'repeat(auto-fit, minmax(160px, 1fr))',
       gap: '8px',
     }}
   >
-    <input
-      type="date"
-      value={filters.startDate}
-      onChange={(e) =>
-        setFilters({ ...filters, startDate: e.target.value })
-      }
-    />
-    <input
-      type="date"
-      value={filters.endDate}
-      onChange={(e) =>
-        setFilters({ ...filters, endDate: e.target.value })
-      }
-    />
+    <div
+      style={{
+        display: 'grid',
+        gridTemplateColumns: 'repeat(auto-fit, minmax(120px, 1fr))',
+        gap: '8px',
+      }}
+    >
+      <input
+        type="date"
+        value={filters.startDate}
+        onChange={(e) =>
+          setFilters({ ...filters, startDate: e.target.value })
+        }
+      />
+      <input
+        type="date"
+        value={filters.endDate}
+        onChange={(e) =>
+          setFilters({ ...filters, endDate: e.target.value })
+        }
+      />
+    </div>
+
     <select
       value={filters.type}
       onChange={(e) =>
@@ -275,6 +284,7 @@ export default function App() {
     />
   </div>
 </div>
+
 
 
         <div className="card" style={{flex:'1 1 420px'}}>
